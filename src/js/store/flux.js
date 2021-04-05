@@ -2,6 +2,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			home: [],
+			details: [],
+			favorites: [],
 
 			baseURL: "https://www.swapi.tech/api/"
 		},
@@ -23,7 +25,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			getAllData: value => {
 				const store = getStore();
-				console.log(`${store.baseURL}${value}`);
 				fetch(`${store.baseURL}${value}`, {
 					method: "GET",
 
@@ -43,9 +44,44 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(err => {
 						console.log("error", err);
 					});
+			},
+
+			getAllDetails: (value, id) => {
+				const store = getStore();
+				fetch(`${store.baseURL}${value}/${id}`, {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					}
+				})
+					.then(resp => {
+						//console.log("respuesta", resp.json());
+						return resp.json();
+					})
+					.then(data => {
+						setStore({ details: data.results || data.result });
+						//	console.log("dataresult ", Object.keys(details));
+					})
+
+					.catch(err => {
+						console.log("error", err);
+					});
+			},
+			setFavorites: name => {
+				const store = getStore();
+
+				store.favorites.includes(name)
+					? setStore({ favorites: store.favorites })
+					: setStore({ favorites: store.favorites.concat(name) });
+				console.log(store.favorites);
+			},
+
+			deleteFavorites: index => {
+				const store = getStore();
+				store.favorites.splice(index, 1);
+				setStore({ favorites: store.favorites });
 			}
 		}
 	};
 };
-
 export default getState;

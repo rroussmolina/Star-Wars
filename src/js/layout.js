@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import ScrollToTop from "./component/scrollToTop";
+import { Container } from "react-bootstrap";
 
+import ScrollToTop from "./component/scrollToTop";
 import { Home } from "./views/home";
-import { Demo } from "./views/demo";
 import { Generic } from "./views/generic";
-import { Single } from "./views/single";
+import { Details } from "./views/details";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { NavbarMenu } from "./component/navbarMenu";
 import { Footer } from "./component/footer";
 
 //create your first component
@@ -18,22 +18,19 @@ const Layout = () => {
 	const basename = process.env.BASENAME || "";
 
 	return (
-		<div className="d-flex flex-column">
+		<Container>
 			<BrowserRouter basename={basename}>
 				<ScrollToTop>
-					<Navbar />
+					<NavbarMenu />
 					<Switch>
 						<Route exact path="/">
 							<Home />
 						</Route>
-						<Route exact path="/demo">
-							<Demo />
-						</Route>
 						<Route exact path="/generic/:value">
 							<Generic />
 						</Route>
-						<Route exact path="/single/:theid">
-							<Single />
+						<Route exact path="/details/:value/:id">
+							<Details />
 						</Route>
 						<Route>
 							<h1>Not found!</h1>
@@ -42,7 +39,7 @@ const Layout = () => {
 					<Footer />
 				</ScrollToTop>
 			</BrowserRouter>
-		</div>
+		</Container>
 	);
 };
 
